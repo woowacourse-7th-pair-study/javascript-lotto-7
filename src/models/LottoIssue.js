@@ -1,12 +1,14 @@
 import { Random } from "@woowacourse/mission-utils";
-import validation from "../utils/validation";
+import validation from "../utils/validation.js";
+import parser from "../utils/parser.js";
 
 class LottoIssue {
   #issuedLotto = [];
 
   constructor(lottoPurchase) {
-    this.#validateLottoPurchase(lottoPurchase);
-    this.#issueLotto(lottoPurchase);
+    const parsedLottoPurchase = parser.stringToNumber(lottoPurchase);
+    this.#validateLottoPurchase(parsedLottoPurchase);
+    this.#issueLotto(parsedLottoPurchase);
   }
 
   getIssuedLotto() {
@@ -23,20 +25,19 @@ class LottoIssue {
   }
 
   #validateLottoPurchase(lottoPurchase) {
-    const parsedLottoPurchase = Number(lottoPurchase);
-    if (validation.isNumber(parsedLottoPurchase)) {
+    if (!validation.isNumber(lottoPurchase)) {
       throw new Error("[ERROR] 숫자가 아닙니다. 다시 입력해주세요.");
     }
 
-    if (validation.isInteger(parsedLottoPurchase)) {
+    if (!validation.isInteger(lottoPurchase)) {
       throw new Error("[ERROR] 정수가 아닙니다. 다시 입력해주세요.");
     }
 
-    if (parsedLottoPurchase % 1_000 !== 0) {
+    if (lottoPurchase % 1_000 !== 0) {
       throw new Error("[ERROR] 1,000원 단위가 아닙니다. 다시 입력해주세요.");
     }
 
-    if (parsedLottoPurchase < 1_000 || parsedLottoPurchase > 100_000) {
+    if (lottoPurchase < 1_000 || lottoPurchase > 100_000) {
       throw new Error("[ERROR] 1,000원 이상 100,000원 이하여야 합니다. 다시 입력해주세요.");
     }
   }
