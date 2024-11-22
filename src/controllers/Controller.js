@@ -15,9 +15,12 @@ class Controller {
     const bonusNumber = await this.#inputBonusNumber(winningLottoNumbers);
 
     const lottoResult = new LottoResult();
-    lottoResult.calculate(issuedLotto, winningLottoNumbers, bonusNumber);
+    lottoResult.calculateLottoResult(issuedLotto, winningLottoNumbers, bonusNumber);
 
     OutputView.printResult(lottoResult.getLottoResult());
+
+    const profitRate = lottoResult.calculateProfitRate(issuedLotto);
+    // OutputView.printProfitRate(profitRate);
   }
 
   async #inputPurchase() {

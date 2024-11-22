@@ -3,22 +3,36 @@ class LottoResult {
 
   constructor() {
     this.#lottoResult = new Map([
-      [6, 0], // 6개 일치
-      [5.5, 0], // 5개 보너스 일치
-      [5, 0], // 5개 일치
-      [4, 0], // 4개 일치
-      [3, 0], // 3개 일치
+      [6, { count: 0, amount: 2_000_000_000 }], // 6개 일치
+      [5.5, { count: 0, amount: 30_000_000 }], // 5개 보너스 일치
+      [5, { count: 0, amount: 1_500_000 }], // 5개 일치
+      [4, { count: 0, amount: 50_000 }], // 4개 일치
+      [3, { count: 0, amount: 5_000 }], // 3개 일치
     ]);
   }
 
-  calculate(issuedLotto, winningLottoNumbers, bonusNumber) {
+  calculateLottoResult(issuedLotto, winningLottoNumbers, bonusNumber) {
     issuedLotto.forEach((lotto) => {
       const matchCount = this.#calculateMatchCount(lotto, winningLottoNumbers);
       const isBonusMatch = lotto.includes(bonusNumber);
 
       const matchRank = this.#getMatchRank(matchCount, isBonusMatch);
-      if (matchRank >= 3) this.#lottoResult.set(matchRank, this.#lottoResult.get(matchRank) + 1);
+      const getMatchRankValue = this.#lottoResult.get(matchRank);
+      if (matchRank >= 3) this.#lottoResult.set(matchRank, { ...getMatchRankValue, count: getMatchRankValue.count + 1});
     });
+  }
+
+  calculateProfitRate(issuedLotto) {
+    const lottoPurchase = issuedLotto.length * 1_000;
+    const totalProfit = this.#calculateProfit();
+    console.log(lottoPurchase);
+    console.log(totalProfit);
+  }
+  
+  #calculateProfit() {
+    return Array.from(this.#lottoResult).reduce((acc, [_, { count, amount }]) => {
+      return acc += count * amount;
+    }, 0);
   }
 
   #calculateMatchCount(lotto, winningLottoNumbers) {
