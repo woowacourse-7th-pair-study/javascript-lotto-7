@@ -16,6 +16,8 @@ class Controller {
 
     const lottoResult = new LottoResult();
     lottoResult.calculate(issuedLotto, winningLottoNumbers, bonusNumber);
+
+    OutputView.printResult(lottoResult.getLottoResult());
   }
 
   async #inputPurchase() {
