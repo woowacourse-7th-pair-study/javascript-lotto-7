@@ -1,4 +1,5 @@
-import { Random } from '@woowacourse/mission-utils';
+import { Random } from "@woowacourse/mission-utils";
+import { LOTTO_BOUNDARY, SERVICE_CONSTANTS } from "../constants.js";
 
 class LottoMachine {
   #lottos;
@@ -8,10 +9,14 @@ class LottoMachine {
   }
 
   generateLotto(amount) {
-    const count = amount / 1000;
+    const count = amount / SERVICE_CONSTANTS.initial_amount;
 
     for (let i = 0; i < count; i += 1) {
-      const lotto = Random.pickUniqueNumbersInRange(1, 45, 6);
+      const lotto = Random.pickUniqueNumbersInRange(
+        LOTTO_BOUNDARY.min,
+        LOTTO_BOUNDARY.max,
+        LOTTO_BOUNDARY.length
+      );
       lotto.sort((a, b) => a - b);
 
       this.#lottos.push(lotto);

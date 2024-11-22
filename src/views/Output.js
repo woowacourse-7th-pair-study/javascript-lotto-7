@@ -1,37 +1,42 @@
-import { Console } from '@woowacourse/mission-utils';
-import { LOTTO_RANK_INFO } from '../constants.js';
+import { Console } from "@woowacourse/mission-utils";
+import { LOTTO_RANK_INFO, MESSAGE } from "../constants.js";
+
 const OutputView = {
   printLottos(lottos) {
-    Console.print(`\n${lottos.length}개를 구매했습니다.`);
+    Console.print(MESSAGE.quantity(lottos.length));
 
     lottos.forEach((lotto) => {
       Console.print(lotto.numbers);
     });
   },
   printRank(lottoResult) {
-    Console.print('\n당첨 통계');
-    Console.print('---------');
+    Console.print(MESSAGE.result_header);
+    Console.print(MESSAGE.bars);
 
     for (const rank of Object.keys(LOTTO_RANK_INFO).reverse()) {
       const { matchCount, prize, matchBonus } = LOTTO_RANK_INFO[rank];
 
       if (matchBonus) {
         Console.print(
-          `${matchCount}개 일치, 보너스 볼 일치 (${prize.toLocaleString()}원) - ${
+          MESSAGE.win_second(
+            matchCount,
+            prize.toLocaleString(),
             lottoResult[rank]
-          }개`,
+          )
         );
       } else {
         Console.print(
-          `${matchCount}개 일치 (${prize.toLocaleString()}원) - ${
+          MESSAGE.win_else(
+            matchCount,
+            prize.toLocaleString(),
             lottoResult[rank]
-          }개`,
+          )
         );
       }
     }
   },
   printEarningsRate(rate) {
-    Console.print(`총 수익률은 ${rate}%입니다.`);
+    Console.print(MESSAGE.earning_rate(rate));
   },
 };
 

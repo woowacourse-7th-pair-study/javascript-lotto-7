@@ -1,53 +1,65 @@
-export const AmountValidator = {
-  amount(value) {
-    this.isNaN(value);
-    this.isWrongUnit(value);
-  },
-  isNaN(value) {
-    if (Number.isNaN(value)) {
-      throw new Error("[ERROR]");
-    }
-  },
-  isWrongUnit(value) {
-    if (value % 1000 != 0) {
-      throw new Error("[ERROR]");
-    }
-  },
+import { LOTTO_BOUNDARY, SERVICE_CONSTANTS } from "../constants.js";
+
+export const amountValidator = (value) => {
+  isNaN(value);
+  isZero(value);
+  isInteger(value);
+  isWrongUnit(value);
 };
 
-export const NumbersValidator = {
-  winningNumbers(value) {
-    this.isWrongLength(value);
+export const winningNumbersValidator = (value) => {
+  isWrongLength(value);
 
-    value.forEach((number) => {
-      this.isNaN(number);
-      this.isNumberInBoundary(number);
-    });
-  },
-  number(winningNumbers, bonus) {
-    this.isNaN(bonus);
-    this.isDuplicated(winningNumbers, bonus);
-  },
+  value.forEach((number) => {
+    isNaN(number);
+    isInteger(number);
+    isNumberInBoundary(number);
+  });
+};
 
-  isDuplicated(winningNumbers, bonus) {
-    if (winningNumbers.includes(bonus)) {
-      throw new Error("[ERROR]");
-    }
-  },
+export const bonusNumberValidator = (winningNumbers, bonus) => {
+  isNaN(bonus);
+  isInteger(bonus);
+  isDuplicated(winningNumbers, bonus);
+  isNumberInBoundary(bonus);
+};
 
-  isNaN(value) {
-    if (Number.isNaN(value)) {
-      throw new Error("[ERROR]");
-    }
-  },
-  isWrongLength(value) {
-    if (value.length != 6) {
-      throw new Error("[ERROR]");
-    }
-  },
-  isNumberInBoundary(value) {
-    if (value > 45 || 1 > value) {
-      throw new Error("[ERROR]");
-    }
-  },
+const isNaN = (value) => {
+  if (Number.isNaN(value)) {
+    throw new Error("[ERROR]");
+  }
+};
+const isWrongUnit = (value) => {
+  if (value % SERVICE_CONSTANTS.initial_amount != 0) {
+    throw new Error("[ERROR]");
+  }
+};
+const isDuplicated = (winningNumbers, bonus) => {
+  if (winningNumbers.includes(bonus)) {
+    throw new Error("[ERROR]");
+  }
+};
+const isWrongLength = (value) => {
+  if (
+    value.length != LOTTO_BOUNDARY.length ||
+    new Set(value).size != LOTTO_BOUNDARY.length
+  ) {
+    throw new Error("[ERROR]");
+  }
+};
+const isNumberInBoundary = (value) => {
+  if (value > LOTTO_BOUNDARY.max || LOTTO_BOUNDARY.min > value) {
+    throw new Error("[ERROR]");
+  }
+};
+const isZero = (value) => {
+  if (value == 0) {
+    throw new Error("[ERROR]");
+  }
+};
+
+const isInteger = (value) => {
+  if (!Number.isInteger(value)) {
+    throw new Error("[ERROR]");
+  }
 };

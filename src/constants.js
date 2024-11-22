@@ -25,3 +25,27 @@ export const LOTTO_RANK_INFO = {
     matchBonus: false,
   },
 };
+
+export const SERVICE_CONSTANTS = Object.freeze({
+  initial_amount: 1000,
+});
+
+export const LOTTO_BOUNDARY = Object.freeze({
+  min: 1,
+  max: 45,
+  length: 6,
+});
+
+export const MESSAGE = Object.freeze({
+  amount: "구입금액을 입력해 주세요.\n",
+  winnig_number: "\n당첨 번호를 입력해 주세요.\n",
+  bonus: "보너스 번호를 입력해 주세요.\n",
+  quantity: (count) => `\n${count}개를 구매했습니다.`,
+  result_header: "\n당첨 통계",
+  bars: "---------",
+  win_second: (matchCount, prize, resultCount) =>
+    `${matchCount}개 일치, 보너스 볼 일치 (${prize}원) - ${resultCount}개`,
+  win_else: (matchCount, prize, resultCount) =>
+    `${matchCount}개 일치 (${prize}원) - ${resultCount}개`,
+  earning_rate: (rate) => `총 수익률은 ${rate}%입니다.`,
+});
