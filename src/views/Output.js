@@ -12,8 +12,7 @@ const OutputView = {
     Console.print('\n당첨 통계');
     Console.print('---------');
 
-    for (const rank in Object.keys(LOTTO_RANK_INFO).reverse()) {
-      console.log(rank);
+    for (const rank of Object.keys(LOTTO_RANK_INFO).reverse()) {
       const { matchCount, prize, matchBonus } = LOTTO_RANK_INFO[rank];
 
       if (matchBonus) {
@@ -30,6 +29,9 @@ const OutputView = {
         );
       }
     }
+  },
+  printEarningsRate(rate) {
+    Console.print(`총 수익률은 ${rate}%입니다.`);
   },
 };
 

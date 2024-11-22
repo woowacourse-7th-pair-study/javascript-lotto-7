@@ -1,10 +1,11 @@
 import Lotto from './Lotto.js';
 import LottoMachine from './models/LottoMachine.js';
-import { AmountValidator } from './utils/Validation.js';
+import { AmountValidator, NumbersValidator } from './utils/Validation.js';
 import InputView from './views/Input.js';
 import OutputView from './views/Output.js';
 import { LOTTO_RANK_INFO } from './constants.js';
 import { Intersection } from './utils/Intersection.js';
+import { inputHandler } from './utils/inputHandler.js';
 
 class App {
   #lottoMachine;
@@ -16,18 +17,21 @@ class App {
   }
 
   async run() {
-    const amount = await this.getAmountInput();
+    const amount = await inputHandler(() => this.getAmountInput());
 
     const lottos = this.buyLotto(amount);
 
     OutputView.printLottos(lottos);
 
-    const winningNumbers = await this.getWinningNumbers();
-    const bonusNumber = await this.getBonusNumber();
+    const winningNumbers = await inputHandler(() => this.getWinningNumbers());
+    const bonusNumber = await inputHandler(() =>
+      this.getBonusNumber(winningNumbers),
+    );
 
     this.calculateLottoRank(lottos, winningNumbers, bonusNumber);
-    console.log(this.#lottoResult);
     OutputView.printRank(this.#lottoResult);
+    const earningRate = this.calculateEarningRate(amount);
+    OutputView.printEarningsRate(earningRate);
   }
 
   async getAmountInput() {
@@ -41,13 +45,14 @@ class App {
   async getWinningNumbers() {
     const winningNumbers = await InputView.readWinningNumbersInput();
 
-    //validation
+    NumbersValidator.winningNumbers(winningNumbers);
     return winningNumbers;
   }
 
-  async getBonusNumber() {
+  async getBonusNumber(winningNumbers) {
     const bonusNumber = await InputView.readBounsNumberInput();
-    //validation
+
+    NumbersValidator.number(winningNumbers, bonusNumber);
     return bonusNumber;
   }
 
@@ -68,20 +73,34 @@ class App {
   matchRank(lotto, winningNumbers, bonusNumber) {
     const userMatchCount = Intersection(lotto.numbers, winningNumbers);
     const userMatchBonus = lotto.numbers.includes(bonusNumber);
-    console.log(userMatchBonus);
 
     if (userMatchCount === 0) return;
 
     for (const rank in LOTTO_RANK_INFO) {
-      const { matchCount } = LOTTO_RANK_INFO[rank];
+      const { matchCount, matchBonus } = LOTTO_RANK_INFO[rank];
       if (matchCount === userMatchCount) {
-        if (userMatchCount === 5 && userMatchBonus) {
+        if (userMatchCount === 5 && userMatchBonus === matchBonus) {
           this.#lottoResult[2] += 1;
+          return;
         } else {
           this.#lottoResult[rank] += 1;
+          return;
         }
       }
     }
+  }
+  calculateEarningRate(amount) {
+    let totalPrize = 0;
+    for (const rank in LOTTO_RANK_INFO) {
+      totalPrize += this.#lottoResult[rank] * LOTTO_RANK_INFO[rank].prize;
+    }
+
+    const earningRate = (totalPrize / amount) * 100;
+
+    return earningRate.toLocaleString(undefined, {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
   }
 }
 
