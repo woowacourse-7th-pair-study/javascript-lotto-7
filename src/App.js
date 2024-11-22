@@ -1,4 +1,3 @@
-import { Console } from "@woowacourse/mission-utils";
 import Controller from "./controllers/Controller.js";
 
 class App {

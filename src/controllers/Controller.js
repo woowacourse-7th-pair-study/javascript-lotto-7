@@ -3,6 +3,7 @@ import Lotto from "../models/Lotto.js";
 import InputView from "../views/InputView.js";
 import OutputView from "../views/OutputView.js";
 import BonusNumber from "../models/BonusNumber.js";
+import LottoResult from "../models/LottoResult.js";
 
 class Controller {
   async start() {
@@ -12,6 +13,9 @@ class Controller {
     const winningLottoNumbers = await this.#inputWinningLottoNumbers();
 
     const bonusNumber = await this.#inputBonusNumber(winningLottoNumbers);
+
+    const lottoResult = new LottoResult();
+    lottoResult.calculate(issuedLotto, winningLottoNumbers, bonusNumber);
   }
 
   async #inputPurchase() {

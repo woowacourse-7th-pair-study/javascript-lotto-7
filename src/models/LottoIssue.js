@@ -20,6 +20,7 @@ class LottoIssue {
 
     for (let count = 0; count < lottoCount; count++) {
       const lottoNumbers = Random.pickUniqueNumbersInRange(1, 45, 6);
+      lottoNumbers.sort((a, b) => a - b);
       this.#issuedLotto.push(lottoNumbers);
     }
   }
