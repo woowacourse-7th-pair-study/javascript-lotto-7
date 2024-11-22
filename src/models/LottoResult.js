@@ -18,20 +18,26 @@ class LottoResult {
 
       const matchRank = this.#getMatchRank(matchCount, isBonusMatch);
       const getMatchRankValue = this.#lottoResult.get(matchRank);
-      if (matchRank >= 3) this.#lottoResult.set(matchRank, { ...getMatchRankValue, count: getMatchRankValue.count + 1});
+      if (matchRank >= 3)
+        this.#lottoResult.set(matchRank, {
+          ...getMatchRankValue,
+          count: getMatchRankValue.count + 1,
+        });
     });
   }
 
   calculateProfitRate(issuedLotto) {
     const lottoPurchase = issuedLotto.length * 1_000;
     const totalProfit = this.#calculateProfit();
-    console.log(lottoPurchase);
-    console.log(totalProfit);
+    return ((totalProfit / lottoPurchase) * 100).toLocaleString("ko-KR", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
   }
-  
+
   #calculateProfit() {
     return Array.from(this.#lottoResult).reduce((acc, [_, { count, amount }]) => {
-      return acc += count * amount;
+      return (acc += count * amount);
     }, 0);
   }
 

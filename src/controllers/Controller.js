@@ -20,7 +20,7 @@ class Controller {
     OutputView.printResult(lottoResult.getLottoResult());
 
     const profitRate = lottoResult.calculateProfitRate(issuedLotto);
-    // OutputView.printProfitRate(profitRate);
+    OutputView.printProfitRate(profitRate);
   }
 
   async #inputPurchase() {
