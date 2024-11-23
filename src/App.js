@@ -1,4 +1,5 @@
-import Controller from "./Controller.js";
+import Controller from './Controller.js';
+
 class App {
   async run() {
     const controller = new Controller();

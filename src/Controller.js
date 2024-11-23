@@ -1,6 +1,7 @@
-import LottoMachine from "./LottoMachine.js";
-import InputView from "./view/InputView.js";
-import OutputView from "./view/OutputVeiw.js";
+import LottoMachine from './LottoMachine.js';
+import LottoResult from './LottoResult.js';
+import InputView from './view/InputView.js';
+import OutputView from './view/OutputVeiw.js';
 
 export default class Controller {
   async play() {
@@ -9,9 +10,13 @@ export default class Controller {
     const bonusNumber = await InputView.getBonusNumber(winNumber);
     const lottoMachine = new LottoMachine();
     lottoMachine.generateLotto(amount);
-    const count = lottoMachine.count;
-    OutputView.printCount(count);
+    OutputView.printCount(lottoMachine.count);
     const lottoStrings = lottoMachine.getLottosNumberString();
     OutputView.printLottos(lottoStrings);
+    const lottoResult = new LottoResult(winNumber, bonusNumber);
+
+    const matchCount = lottoResult.matchCount(lottoMachine.lottos);
+    lottoResult.generateResult(matchCount);
+    console.log(lottoResult.result);
   }
 }
