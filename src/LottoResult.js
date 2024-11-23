@@ -1,3 +1,4 @@
+import { WIN_AMOUNT } from "./constants.js";
 class LottoResult {
   #winNumber;
   #bonusNumber;
@@ -32,12 +33,19 @@ class LottoResult {
       return 3;
     }
     if (count === 6) return 1;
-
     return 6;
   }
 
   get result() {
     return this.#result;
+  }
+
+  calculateWinAmount() {
+    let winAmount = 0;
+    Object.keys(this.#result).forEach((key) => {
+      winAmount += WIN_AMOUNT[key] * this.#result[key];
+    });
+    return winAmount;
   }
 }
 
