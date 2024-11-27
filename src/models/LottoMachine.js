@@ -1,5 +1,5 @@
 import { Random } from "@woowacourse/mission-utils";
-import Lotto from "../Lotto";
+import Lotto from "./Lotto";
 
 export default class LottoMachine {
   static generateLottos(count) {

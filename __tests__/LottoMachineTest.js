@@ -1,5 +1,3 @@
-import Lotto from "../src/Lotto";
-import { MissionUtils } from "@woowacourse/mission-utils";
 import LottoMachine from "../src/models/LottoMachine";
 
 describe("로또머신 테스트", () => {

@@ -12,7 +12,18 @@ class Lotto {
     }
   }
 
-  // TODO: 추가 기능 구현
+  checkMatchWithWinner(winNumbers) {
+    let count = 0;
+    winNumbers.forEach((number) => {
+      if (this.#numbers.includes(number)) count += 1;
+    });
+
+    return count;
+  }
+
+  checkBonus(bonus) {
+    return this.#numbers.includes(bonus);
+  }
 }
 
 export default Lotto;
