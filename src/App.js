@@ -1,29 +1,24 @@
-import Lotto from './Lotto.js';
-import LottoMachine from './LottoMachine.js';
-import View from './View.js';
-import BonusNumber from './BonusNumber.js';
+import Lotto from "./Lotto.js";
+import LottoMachine from "./LottoMachine.js";
+import View from "./View.js";
+import BonusNumber from "./BonusNumber.js";
 
 class App {
   #lottoMachine;
-  #winnigLotto;
+  #winningLotto;
   #bonusNumber;
+
   async run() {
     await this.#makeLottoMachine();
 
     this.#lottoMachine.createLottos();
     View.printLotto(this.#lottoMachine.getLottosForPrint());
 
-    const winningNumbersInput = await View.inputWinningNumbers();
-    const parsedWinningNumbers = winningNumbersInput
-      .split(',')
-      .map((val) => Number(val.trim()));
-    const winningLotto = new Lotto(parsedWinningNumbers);
+    await this.#makeWinningLotto();
 
-    const bonusNumberInput = await View.inputBonusNumber();
-    const parsedBonusNumber = Number(bonusNumberInput);
-    const bonusNumber = new BonusNumber(parsedBonusNumber, winningLotto);
+    await this.#makeBonusNumber();
 
-    this.#lottoMachine.calculateResult(winningLotto, bonusNumber);
+    this.#lottoMachine.calculateResult(this.#winningLotto, this.#bonusNumber);
 
     const resultString = this.#lottoMachine.getResultForPrint();
     View.printResult(resultString);
@@ -38,6 +33,28 @@ class App {
     } catch (error) {
       View.printError(error.message);
       await this.#makeLottoMachine();
+    }
+  }
+
+  async #makeWinningLotto() {
+    try {
+      const winningNumbersInput = await View.inputWinningNumbers();
+      const parsedWinningNumbers = winningNumbersInput.split(",").map((val) => Number(val.trim()));
+      this.#winningLotto = new Lotto(parsedWinningNumbers);
+    } catch (error) {
+      View.printError(error.message);
+      await this.#makeWinningLotto();
+    }
+  }
+
+  async #makeBonusNumber() {
+    try {
+      const bonusNumberInput = await View.inputBonusNumber();
+      const parsedBonusNumber = Number(bonusNumberInput);
+      this.#bonusNumber = new BonusNumber(parsedBonusNumber, this.#winningLotto);
+    } catch (error) {
+      View.printError(error.message);
+      await this.#makeBonusNumber();
     }
   }
 }
