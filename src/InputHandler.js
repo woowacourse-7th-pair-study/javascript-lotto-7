@@ -10,8 +10,8 @@ export default class InputHandler {
       Validate.checkAmount(amount);
       return amount;
     } catch (error) {
-      Console.print(error);
-      this.amount();
+      Console.print(error.message);
+      return await this.amount();
     }
   }
 
@@ -24,8 +24,8 @@ export default class InputHandler {
       Validate.checkWinnNumbers(winNumbers);
       return winNumbers;
     } catch (error) {
-      Console.print(error);
-      this.winNumbers();
+      Console.print(error.message);
+      return await this.winNumbers();
     }
   }
 
@@ -36,8 +36,8 @@ export default class InputHandler {
       Validate.checkBonusNumber(bonusNumber, winNumbers);
       return bonusNumber;
     } catch (error) {
-      Console.print(error);
-      this.bonusNumber();
+      Console.print(error.message);
+      return await this.bonusNumber();
     }
   }
 }

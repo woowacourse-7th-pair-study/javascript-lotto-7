@@ -6,7 +6,8 @@ export default class LottoMachine {
     const lottos = [];
     for (let i = 0; i < count; i++) {
       const randomNumbers = Random.pickUniqueNumbersInRange(1, 45, 6);
-      const newLotto = new Lotto(randomNumbers);
+      const sortedRandomNumbers = randomNumbers.sort((a, b) => a - b);
+      const newLotto = new Lotto(sortedRandomNumbers);
       lottos.push(newLotto);
     }
     return lottos;
