@@ -1,29 +1,44 @@
-import Lotto from "./Lotto.js";
-import LottoMachine from "./LottoMachine.js";
-import View from "./View.js";
-import BonusNumber from "./BonusNumber.js";
+import Lotto from './Lotto.js';
+import LottoMachine from './LottoMachine.js';
+import View from './View.js';
+import BonusNumber from './BonusNumber.js';
 
 class App {
+  #lottoMachine;
+  #winnigLotto;
+  #bonusNumber;
   async run() {
-    const purchaseAmountInput = await View.inputPurchaseAmount();
-    const parsedPurchaseAmount = Number(purchaseAmountInput);
-    const lottoMachine = new LottoMachine(parsedPurchaseAmount);
+    await this.#makeLottoMachine();
 
-    lottoMachine.createLottos();
-    View.printLotto(lottoMachine.getLottosForPrint());
+    this.#lottoMachine.createLottos();
+    View.printLotto(this.#lottoMachine.getLottosForPrint());
 
     const winningNumbersInput = await View.inputWinningNumbers();
-    const parsedWinningNumbers = winningNumbersInput.split(",").map((val) => Number(val.trim()));
+    const parsedWinningNumbers = winningNumbersInput
+      .split(',')
+      .map((val) => Number(val.trim()));
     const winningLotto = new Lotto(parsedWinningNumbers);
 
     const bonusNumberInput = await View.inputBonusNumber();
     const parsedBonusNumber = Number(bonusNumberInput);
     const bonusNumber = new BonusNumber(parsedBonusNumber, winningLotto);
 
-    lottoMachine.calculateResult(winningLotto, bonusNumber);
+    this.#lottoMachine.calculateResult(winningLotto, bonusNumber);
 
-    const resultString = lottoMachine.getResultForPrint();
+    const resultString = this.#lottoMachine.getResultForPrint();
     View.printResult(resultString);
+    View.printProfitRate(this.#lottoMachine.getProfitRate());
+  }
+
+  async #makeLottoMachine() {
+    try {
+      const purchaseAmountInput = await View.inputPurchaseAmount();
+      const parsedPurchaseAmount = Number(purchaseAmountInput);
+      this.#lottoMachine = new LottoMachine(parsedPurchaseAmount);
+    } catch (error) {
+      View.printError(error.message);
+      await this.#makeLottoMachine();
+    }
   }
 }
 
