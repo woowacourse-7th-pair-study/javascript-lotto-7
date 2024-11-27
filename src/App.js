@@ -1,7 +1,7 @@
-import Lotto from "./Lotto.js";
-import LottoMachine from "./LottoMachine.js";
-import View from "./View.js";
-import BonusNumber from "./BonusNumber.js";
+import Lotto from './Lotto.js';
+import LottoMachine from './LottoMachine.js';
+import View from './View.js';
+import BonusNumber from './BonusNumber.js';
 
 class App {
   #lottoMachine;
@@ -15,7 +15,6 @@ class App {
     View.printLotto(this.#lottoMachine.getLottosForPrint());
 
     await this.#makeWinningLotto();
-
     await this.#makeBonusNumber();
 
     this.#lottoMachine.calculateResult(this.#winningLotto, this.#bonusNumber);
@@ -39,7 +38,9 @@ class App {
   async #makeWinningLotto() {
     try {
       const winningNumbersInput = await View.inputWinningNumbers();
-      const parsedWinningNumbers = winningNumbersInput.split(",").map((val) => Number(val.trim()));
+      const parsedWinningNumbers = winningNumbersInput
+        .split(',')
+        .map((val) => Number(val.trim()));
       this.#winningLotto = new Lotto(parsedWinningNumbers);
     } catch (error) {
       View.printError(error.message);
@@ -51,7 +52,10 @@ class App {
     try {
       const bonusNumberInput = await View.inputBonusNumber();
       const parsedBonusNumber = Number(bonusNumberInput);
-      this.#bonusNumber = new BonusNumber(parsedBonusNumber, this.#winningLotto);
+      this.#bonusNumber = new BonusNumber(
+        parsedBonusNumber,
+        this.#winningLotto,
+      );
     } catch (error) {
       View.printError(error.message);
       await this.#makeBonusNumber();

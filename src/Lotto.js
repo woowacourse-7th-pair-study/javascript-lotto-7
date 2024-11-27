@@ -1,3 +1,6 @@
+import { LOTTO_LENGTH, LOTTO_NUMBER_RANGE } from './constant/lottoRule.js';
+import { ERROR_MESSAGE } from './constant/messgae.js';
+
 class Lotto {
   #numbers;
 
@@ -7,28 +10,32 @@ class Lotto {
   }
 
   #validate(numbers) {
-    if (numbers.length !== 6) {
-      throw new Error("[ERROR] 로또 번호는 6개여야 합니다.");
+    if (numbers.length !== LOTTO_LENGTH) {
+      throw new Error(ERROR_MESSAGE.INVALID_LOTTO_LENGTH);
     }
     if (new Set(numbers).size !== numbers.length) {
-      throw new Error("[ERROR] 로또 번호는 중복될 수 없습니다. 다시 입력해주세요.");
+      throw new Error(ERROR_MESSAGE.NO_DUPLICATE_NUMBER);
     }
 
     numbers.forEach((num) => {
-      if (Number.isNaN(Number(num))) {
-        throw new Error("[ERROR] 숫자가 아닙니다. 다시 입력해주세요.");
-      }
-      if (!Number.isInteger(num)) {
-        throw new Error("[ERROR] 정수가 아닙니다. 다시 입력해주세요.");
-      }
-      if (num < 1 || num > 45) {
-        throw new Error("[ERROR] 로또 번호는 1~45 범위 내로만 입력 가능합니다. 다시 입력해주세요.");
-      }
+      this.#validateEachNumber(num);
     });
   }
 
+  #validateEachNumber(num) {
+    if (Number.isNaN(Number(num))) {
+      throw new Error(ERROR_MESSAGE.NOT_NUMBER);
+    }
+    if (!Number.isInteger(num)) {
+      throw new Error(ERROR_MESSAGE.NOT_INTEGER);
+    }
+    if (num < LOTTO_NUMBER_RANGE.min || num > LOTTO_NUMBER_RANGE.max) {
+      throw new Error(ERROR_MESSAGE.NOT_IN_RANGE);
+    }
+  }
+
   getNumberForPrint() {
-    return `[${this.#numbers.join(", ")}]`;
+    return `[${this.#numbers.join(', ')}]`;
   }
 
   hasNumber(number) {

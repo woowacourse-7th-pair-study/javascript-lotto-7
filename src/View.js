@@ -1,16 +1,16 @@
 import { Console } from '@woowacourse/mission-utils';
 
 const View = {
-  async inputPurchaseAmount() {
-    return await Console.readLineAsync('구입금액을 입력해 주세요.\n');
+  inputPurchaseAmount() {
+    return Console.readLineAsync('구입금액을 입력해 주세요.\n');
   },
 
-  async inputWinningNumbers() {
-    return await Console.readLineAsync('당첨 번호를 입력해 주세요.\n');
+  inputWinningNumbers() {
+    return Console.readLineAsync('당첨 번호를 입력해 주세요.\n');
   },
 
-  async inputBonusNumber() {
-    return await Console.readLineAsync('보너스 번호를 입력해 주세요.\n');
+  inputBonusNumber() {
+    return Console.readLineAsync('보너스 번호를 입력해 주세요.\n');
   },
 
   printError(message) {
@@ -24,9 +24,11 @@ const View = {
     });
   },
 
-  printResult(resultString) {
+  printResult(resultObjects) {
     Console.print('당첨 통계\n---\n');
-    Console.print(resultString);
+    resultObjects.reverse().forEach(({ string, price, count }) => {
+      Console.print(`${string} (${price.toLocaleString()}원) - ${count}개`);
+    });
   },
 
   printProfitRate(rate) {
