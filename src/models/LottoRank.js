@@ -1,6 +1,8 @@
-import { LOTTO_INFO } from "../Constants";
+import { LOTTO_INFO } from "../Constants.js";
 export default class LottoRank {
   #lottoResult;
+  #totalPrize;
+
   constructor() {
     this.#lottoResult = {
       1: 0,
@@ -10,6 +12,7 @@ export default class LottoRank {
       5: 0,
       6: 0,
     };
+    this.#totalPrize = 0;
   }
 
   calculateRank(lotto, winNumbers, bonusNumber) {
@@ -31,10 +34,18 @@ export default class LottoRank {
   calculateLottoResult(lottos, winNumbers, bonusNumber) {
     lottos.forEach((lotto) => {
       const rank = this.calculateRank(lotto, winNumbers, bonusNumber);
-      this.#lottoResult[rank] += 1;
+      if (rank < 6) {
+        this.#lottoResult[rank] += 1;
+        this.#totalPrize += LOTTO_INFO[rank].prize;
+      }
     });
   }
+
   get lottoResult() {
     return this.#lottoResult;
+  }
+
+  get totalPrize() {
+    return this.#totalPrize;
   }
 }

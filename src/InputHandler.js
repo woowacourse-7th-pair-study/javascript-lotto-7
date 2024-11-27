@@ -1,5 +1,5 @@
-import Validate from "./Validate";
-import InputView from "./Views/InputView";
+import Validate from "./Validate.js";
+import InputView from "./Views/InputView.js";
 import { Console } from "@woowacourse/mission-utils";
 
 export default class InputHandler {

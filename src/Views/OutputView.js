@@ -1,5 +1,5 @@
 import { Console } from "@woowacourse/mission-utils";
-import { LOTTO_INFO } from "../Constants";
+import { LOTTO_INFO } from "../Constants.js";
 class OutputView {
   static printLottoCount(count) {
     Console.print(`${count}개를 구매했습니다.`);
@@ -18,7 +18,7 @@ class OutputView {
     Object.keys(LOTTO_INFO)
       .reverse()
       .forEach((rank) => {
-        const [matchCount, matchBonus, prize] = LOTTO_INFO[rank];
+        const { matchCount, matchBonus, prize } = LOTTO_INFO[rank];
 
         if (matchBonus) {
           Console.print(
