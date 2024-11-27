@@ -54,6 +54,9 @@
 
 - validation test
 - parser test
+- Lotto test
+- LottoCalculator test
+- LottoStatistics test
 
 ## 폴더 구조
 

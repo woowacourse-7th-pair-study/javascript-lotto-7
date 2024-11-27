@@ -32,6 +32,7 @@ class App {
     );
 
     OutputView.printStatistics(statistics);
+
     const lottoCalculator = new LottoCalculator(statistics, amount);
     OutputView.printProfitRate(lottoCalculator.getProfitRate());
   }
