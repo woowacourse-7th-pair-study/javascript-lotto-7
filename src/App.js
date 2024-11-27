@@ -6,6 +6,7 @@ import {
   validateBonusNumber,
   validateWinningNumbers,
 } from './util/validation.js';
+import generateLotto from './util/generateLotto.js';
 import Lotto from './model/Lotto.js';
 
 class App {
@@ -55,6 +56,10 @@ class App {
     validateBonusNumber(parsedBonusNumber, winningNumbers);
 
     return parsedBonusNumber;
+  }
+
+  getResult() {
+    const result = new Array(5).fill(0);
   }
 }
 
