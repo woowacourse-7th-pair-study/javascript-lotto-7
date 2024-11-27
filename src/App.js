@@ -8,30 +8,43 @@ import {
 } from './util/validation.js';
 import generateLotto from './util/generateLotto.js';
 import Lotto from './model/Lotto.js';
+import OutputView from './view/OutputView.js';
+import LottoStatistics from './model/LottoStatistics.js';
 
 class App {
   async run() {
-    const amount = await tryInput(() => this.getAmount());
-    const winningNumbers = await tryInput(() => this.getWinningNumbers());
-    const bonusNumber = await tryInput(() =>
-      this.getBonusNumber(winningNumbers),
-    );
+    const amount = await tryInput(() => this.#getAmount());
 
     const lottoInstanceArray = this.#buyLotto(amount);
-    // 당첨 계산하기 (Lotto에서 발행된 로또를 하나씩 저장하여 당첨 번호와 보너스 번호 검증해서 당첨 개수 반환)
+    
+    const winningNumbers = await tryInput(() => this.#getWinningNumbers());
+    const bonusNumber = await tryInput(() => this.#getBonusNumber(winningNumbers));
+
+    const lottoStatistics = new LottoStatistics();
+    const statistics = this.#getStatistics(lottoInstanceArray, winningNumbers, bonusNumber, lottoStatistics);
+
+    OutputView.printStatistics(statistics);
+  }
+
+  #getStatistics(lottoInstanceArray, winningNumbers, bonusNumber, lottoStatistics) {
+
     lottoInstanceArray.forEach((lottoInstance) => {
-      // lottoInstance
+      const winningRank = lottoInstance.getWinningRank(winningNumbers, bonusNumber);
+      lottoStatistics.addRankCount(winningRank);
     });
+
+    return lottoStatistics.getLottoStatistics();
   }
 
   #buyLotto(amount) {
     // 로또 발행하기
     const issuedLottos = generateLotto(amount);
+    OutputView.printIssuedLottos(issuedLottos);
 
     return issuedLottos.map((lotto) => new Lotto(lotto));
   }
 
-  async getAmount() {
+  async #getAmount() {
     const amount = await InputView.readAmount();
 
     const parsedAmount = parser.stringToNumber(amount);
@@ -40,7 +53,7 @@ class App {
     return parsedAmount;
   }
 
-  async getWinningNumbers() {
+  async #getWinningNumbers() {
     const winningNumbers = await InputView.readWinningNumbers();
 
     const parsedWinningNumbers = parser.stringToArray(winningNumbers);
@@ -49,17 +62,13 @@ class App {
     return parsedWinningNumbers;
   }
 
-  async getBonusNumber(winningNumbers) {
+  async #getBonusNumber(winningNumbers) {
     const bonusNumber = await InputView.readBonusNumber();
 
     const parsedBonusNumber = parser.stringToNumber(bonusNumber);
     validateBonusNumber(parsedBonusNumber, winningNumbers);
 
     return parsedBonusNumber;
-  }
-
-  getResult() {
-    const result = new Array(5).fill(0);
   }
 }
 

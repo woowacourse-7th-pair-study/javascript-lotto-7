@@ -8,6 +8,8 @@ const generateLotto = (amount) => {
     const randomLotto = Random.pickUniqueNumbersInRange(1, 45, 6);
     issuedLottos.push(randomLotto.sort((a, b) => a - b));
   }
+
+  return issuedLottos;
 }
 
 export default generateLotto;

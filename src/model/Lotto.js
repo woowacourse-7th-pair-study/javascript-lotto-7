@@ -40,6 +40,8 @@ class Lotto {
         return 2;
       case 6:
         return 1;
+      default: 
+        return -1;
     }
   }
 }
