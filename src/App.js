@@ -9,10 +9,11 @@ import {
 
 class App {
   async run() {
-    console.log("111");
     const amount = await tryInput(() => this.getAmount());
     const winningNumbers = await tryInput(() => this.getWinningNumbers());
-    const bonusNumber = await tryInput(() => this.getBonusNumber(winningNumbers));
+    const bonusNumber = await tryInput(() =>
+      this.getBonusNumber(winningNumbers),
+    );
   }
 
   async getAmount() {

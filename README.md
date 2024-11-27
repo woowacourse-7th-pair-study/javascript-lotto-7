@@ -52,7 +52,8 @@
 
 ### 단위 테스트
 
-ToDo...
+- validation test
+- parser test
 
 ## 폴더 구조
 
