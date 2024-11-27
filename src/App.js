@@ -1,6 +1,6 @@
 import InputView from './view/InputView.js';
 import tryInput from './util/tryInput.js';
-
+import parser from './util/parser.js';
 import {
   validateAmount,
   validateBonusNumber,
@@ -9,27 +9,37 @@ import {
 
 class App {
   async run() {
+    console.log("111");
     const amount = await tryInput(() => this.getAmount());
+    const winningNumbers = await tryInput(() => this.getWinningNumbers());
+    const bonusNumber = await tryInput(() => this.getBonusNumber(winningNumbers));
   }
 
   async getAmount() {
     const amount = await InputView.readAmount();
 
-    // validateAmount()
+    const parsedAmount = parser.stringToNumber(amount);
+    validateAmount(parsedAmount);
 
-    return amount;
+    return parsedAmount;
   }
 
   async getWinningNumbers() {
     const winningNumbers = await InputView.readWinningNumbers();
 
-    return winningNumbers;
+    const parsedWinningNumbers = parser.stringToArray(winningNumbers);
+    validateWinningNumbers(parsedWinningNumbers);
+
+    return parsedWinningNumbers;
   }
 
-  async getBonusNumber() {
+  async getBonusNumber(winningNumbers) {
     const bonusNumber = await InputView.readBonusNumber();
 
-    return bonusNumber;
+    const parsedBonusNumber = parser.stringToNumber(bonusNumber);
+    validateBonusNumber(parsedBonusNumber, winningNumbers);
+
+    return parsedBonusNumber;
   }
 }
 
