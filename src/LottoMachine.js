@@ -1,7 +1,7 @@
-import { Random } from '@woowacourse/mission-utils';
-import Lotto from './Lotto.js';
-import { LOTTO_PRICE, LOTTO_PRIZE_INFO } from './constant/lottoRule.js';
-import { ERROR_MESSAGE } from './constant/messgae.js';
+import { Random } from "@woowacourse/mission-utils";
+import Lotto from "./Lotto.js";
+import { LOTTO_PRICE, LOTTO_PRIZE_INFO } from "./constant/lottoRule.js";
+import { ERROR_MESSAGE } from "./constant/messgae.js";
 
 class LottoMachine {
   #lottoCount;
@@ -30,9 +30,7 @@ class LottoMachine {
 
   createLottos() {
     for (let i = 0; i < this.#lottoCount; i += 1) {
-      const lottoNumbers = Random.pickUniqueNumbersInRange(1, 45, 6).sort(
-        (a, b) => a - b,
-      );
+      const lottoNumbers = Random.pickUniqueNumbersInRange(1, 45, 6).sort((a, b) => a - b);
       const lotto = new Lotto(lottoNumbers);
       this.#lottos.push(lotto);
     }
@@ -46,9 +44,7 @@ class LottoMachine {
   }
 
   calculateResult(winningLotto, bonusNumber) {
-    this.#result = Object.fromEntries(
-      Object.keys(LOTTO_PRIZE_INFO).map((key) => [key, 0]),
-    );
+    this.#result = Object.fromEntries(Object.keys(LOTTO_PRIZE_INFO).map((key) => [key, 0]));
 
     this.#lottos.forEach((lotto) => {
       const matchCount = lotto.getMatchCount(winningLotto);
@@ -83,10 +79,10 @@ class LottoMachine {
 
     const profit = Object.entries(this.#result).reduce(
       (acc, [key, count]) => acc + count * LOTTO_PRIZE_INFO[key].price,
-      0,
+      0
     );
 
-    return ((profit / purchaseAmount) * 100).toLocaleString('ko-KR', {
+    return ((profit / purchaseAmount) * 100).toLocaleString("ko-KR", {
       minimumFractionDigits: 1,
       maximumFractionDigits: 1,
     });
