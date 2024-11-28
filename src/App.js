@@ -13,10 +13,11 @@ import LottoStatistics from './model/LottoStatistics.js';
 import LottoCalculator from './model/LottoCalculator.js';
 
 class App {
+  #lottos;
+
   async run() {
     const amount = await tryInput(() => this.#getAmount());
-
-    const lottoInstanceArray = this.#buyLotto(amount);
+    this.#lottos = this.#buyLotto(amount);
 
     const winningNumbers = await tryInput(() => this.#getWinningNumbers());
     const bonusNumber = await tryInput(() =>
@@ -25,25 +26,22 @@ class App {
 
     const lottoStatistics = new LottoStatistics();
     const statistics = this.#getStatistics(
-      lottoInstanceArray,
       winningNumbers,
       bonusNumber,
       lottoStatistics,
     );
 
-    OutputView.printStatistics(statistics);
-
     const lottoCalculator = new LottoCalculator(statistics, amount);
-    OutputView.printProfitRate(lottoCalculator.getProfitRate());
+    this.#showResult(statistics, lottoCalculator.getProfitRate());
   }
 
-  #getStatistics(
-    lottoInstanceArray,
-    winningNumbers,
-    bonusNumber,
-    lottoStatistics,
-  ) {
-    lottoInstanceArray.forEach((lottoInstance) => {
+  #showResult(statistics, profitRate) {
+    OutputView.printStatistics(statistics);
+    OutputView.printProfitRate(profitRate);
+  }
+
+  #getStatistics(winningNumbers, bonusNumber, lottoStatistics) {
+    this.#lottos.forEach((lottoInstance) => {
       const winningRank = lottoInstance.getWinningRank(
         winningNumbers,
         bonusNumber,
