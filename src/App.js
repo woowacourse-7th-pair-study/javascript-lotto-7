@@ -16,6 +16,11 @@ class App {
   #lottos;
 
   async run() {
+    const { amount, winningNumbers, bonusNumber } = await this.#processInput();
+    this.#processStatistics(amount, winningNumbers, bonusNumber);
+  }
+
+  async #processInput() {
     const amount = await tryInput(() => this.#getAmount());
     this.#lottos = this.#buyLotto(amount);
 
@@ -24,6 +29,10 @@ class App {
       this.#getBonusNumber(winningNumbers),
     );
 
+    return { amount, winningNumbers, bonusNumber };
+  }
+
+  #processStatistics(amount, winningNumbers, bonusNumber) {
     const lottoStatistics = new LottoStatistics();
     const statistics = this.#getStatistics(
       winningNumbers,
@@ -32,20 +41,13 @@ class App {
     );
 
     const lottoCalculator = new LottoCalculator(statistics, amount);
-    this.#showResult(statistics, lottoCalculator.getProfitRate());
-  }
-
-  #showResult(statistics, profitRate) {
     OutputView.printStatistics(statistics);
-    OutputView.printProfitRate(profitRate);
+    OutputView.printProfitRate(lottoCalculator.getProfitRate());
   }
 
   #getStatistics(winningNumbers, bonusNumber, lottoStatistics) {
-    this.#lottos.forEach((lottoInstance) => {
-      const winningRank = lottoInstance.getWinningRank(
-        winningNumbers,
-        bonusNumber,
-      );
+    this.#lottos.forEach((lotto) => {
+      const winningRank = lotto.getWinningRank(winningNumbers, bonusNumber);
       lottoStatistics.addRankCount(winningRank);
     });
 

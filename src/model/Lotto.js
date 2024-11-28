@@ -1,4 +1,4 @@
-import { LOTTO_RANK_INDEX } from '../constant/lotto';
+import { LOTTO_RANK_INDEX } from '../constant/lotto.js';
 
 class Lotto {
   #numbers;
