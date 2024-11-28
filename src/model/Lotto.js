@@ -1,3 +1,5 @@
+import { LOTTO_RANK_INDEX } from '../constant/lotto';
+
 class Lotto {
   #numbers;
 
@@ -9,14 +11,10 @@ class Lotto {
     let count = 0;
 
     this.#numbers.forEach((number) => {
-      if (winningNumbers.includes(number)) {
-        count += 1;
-      }
+      if (winningNumbers.includes(number)) count += 1
     });
 
-    if (count === 5) {
-      count = this.#checkBonusNumber(bonusNumber);
-    }
+    if (count === 5) count = this.#checkBonusNumber(bonusNumber);
 
     return this.#checkLottoRank(count);
   }
@@ -31,17 +29,17 @@ class Lotto {
   #checkLottoRank(count) {
     switch (count) {
       case 3:
-        return 5;
+        return LOTTO_RANK_INDEX.fifth;
       case 4:
-        return 4;
+        return LOTTO_RANK_INDEX.fourth;
       case 5:
-        return 3;
+        return LOTTO_RANK_INDEX.third;
       case 5.5:
-        return 2;
+        return LOTTO_RANK_INDEX.second;
       case 6:
-        return 1;
+        return LOTTO_RANK_INDEX.first;
       default: 
-        return -1;
+        return LOTTO_RANK_INDEX.lose;
     }
   }
 }

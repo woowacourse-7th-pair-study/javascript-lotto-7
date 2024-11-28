@@ -1,3 +1,5 @@
+import { LOTTO_RULE } from '../constant/lotto.js';
+
 const isNaN = (number) => {
   if (Number.isNaN(number)) {
     throw new Error('[ERROR] 숫자가 아닙니다. 다시 입력해 주세요.');
@@ -11,7 +13,7 @@ const isInteger = (number) => {
 };
 
 const isAmountInRange = (number) => {
-  if (number < 1_000 || number > 100_000) {
+  if (number < LOTTO_RULE.UNIT || number > LOTTO_RULE.MAX_AMOUNT) {
     throw new Error(
       '[ERROR] 로또 구입 금액은 1,000원 이상 100,000원 이하여야 합니다. 다시 입력해 주세요.',
     );
@@ -19,7 +21,7 @@ const isAmountInRange = (number) => {
 };
 
 const isNumberInRange = (number) => {
-  if (number < 1 || number > 45) {
+  if (number < LOTTO_RULE.MIN_RANGE || number > LOTTO_RULE.MAX_RANGE) {
     throw new Error(
       '[ERROR] 로또 번호는 1 이상 45 이하여야 합니다. 다시 입력해 주세요.',
     );
@@ -27,7 +29,7 @@ const isNumberInRange = (number) => {
 };
 
 const isWrongUnit = (number) => {
-  if (number % 1_000 !== 0) {
+  if (number % LOTTO_RULE.UNIT !== 0) {
     throw new Error(
       '[ERROR] 로또 구입 금액은 1,000원 단위여야 합니다. 다시 입력해 주세요.',
     );
@@ -35,7 +37,7 @@ const isWrongUnit = (number) => {
 };
 
 const isWrongLength = (numArray) => {
-  if (numArray.length !== 6) {
+  if (numArray.length !== LOTTO_RULE.LENGTH) {
     throw new Error('[ERROR] 로또 번호는 6개여야 합니다.');
   }
 };

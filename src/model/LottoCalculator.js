@@ -7,6 +7,10 @@ class LottoCalculator {
     this.#profitRate = this.#calculateProfitRate(statistics, amount);
   }
 
+  getProfitRate() {
+    return this.#profitRate;
+  }
+
   #calculateTotalWinningPrize(statistics) {
     return statistics.reduce(
       (arr, cur, idx) => (arr += LOTTO_RANK_PRIZE[idx] * cur),
@@ -21,10 +25,6 @@ class LottoCalculator {
       minimumFractionDigits: 1,
       maximumFractionDigits: 1,
     });
-  }
-
-  getProfitRate() {
-    return this.#profitRate;
   }
 }
 

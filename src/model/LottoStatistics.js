@@ -1,3 +1,4 @@
+import { LOTTO_RANK_INDEX } from '../constant/lotto.js';
 
 class LottoStatistics {
   #statistics;
@@ -20,8 +21,8 @@ class LottoStatistics {
    * @param {number} winningRank 
    */
   addRankCount(winningRank) {
-    if (winningRank !== -1) {
-      this.#statistics[winningRank - 1] += 1;
+    if (winningRank !== LOTTO_RANK_INDEX.lose) {
+      this.#statistics[winningRank] += 1;
     }
   }
 }
